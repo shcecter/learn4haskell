@@ -577,7 +577,14 @@ True
 >>> isVowel 'x'
 False
 -}
-isVowel c = error "isVowel: not implemented!"
+isVowel :: Char -> Bool
+isVowel c
+    | c == 'a' = True
+    | c == 'e' = True
+    | c == 'i' = True
+    | c == 'o' = True
+    | c == 'u' = True
+    | otherwise = False
 
 
 {- |
@@ -641,8 +648,20 @@ Try to introduce variables in this task (either with let-in or where) to avoid
 specifying complex expressions.
 -}
 
-sumLast2 n = error "sumLast2: Not implemented!"
+sumLast2 :: Int -> Int
+sumLast2 n =
+    let lastD = lastDigit n
+        preLastD = lastDigit (div n 10)
+    in lastD + preLastD
+  
+sumLast2Alt :: Int -> Int
+sumLast2Alt n = lastD + preLastD
+  where
+    lastD = lastDigit n
+    preLastD = lastDigit (div n 10)
 
+sumLast2AltAlt :: Int -> Int
+sumLast2AltAlt n = lastDigit n + lastDigit (div n 10)
 
 {- |
 =💣= Task 10*
@@ -661,8 +680,8 @@ Implement a function that returns the first digit of a given number.
 You need to use recursion in this task. Feel free to return to it later, if you
 aren't ready for this boss yet!
 -}
-
-firstDigit n = error "firstDigit: Not implemented!"
+firstDigit :: Int -> Int
+firstDigit n = if n < 10 then n else firstDigit (div n 10)
 
 
 {-
