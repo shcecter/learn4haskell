@@ -209,31 +209,31 @@ So, the output in this example means that 'False' has type 'Bool'.
 > Try to guess first and then compare your expectations with GHCi output
 
 >>> :t True
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+True :: Bool
 >>> :t 'a'
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+'a' :: Char
 >>> :t 42
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+42 :: Num a => a
 
 A pair of boolean and char:
 >>> :t (True, 'x')
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+(True, 'x') :: (Bool, Char)
 
 Boolean negation:
 >>> :t not
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+not :: Bool -> Bool
 
 Boolean 'and' operator:
 >>> :t (&&)
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+(&&) :: Bool -> Bool -> Bool
 
 Addition of two numbers:
 >>> :t (+)
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+(+) :: Num a => a -> a -> a
 
 Maximum of two values:
 >>> :t max
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+max :: Ord a => a -> a -> a
 
 You might not understand each type at this moment, but don't worry! You've only
 started your Haskell journey. Types will become your friends soon.
@@ -310,34 +310,34 @@ expressions in GHCi
 15
 
 >>> (3 + 5) < 10
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+True
 
 >>> True && False
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+False
 
 >>> 10 < 20 || 20 < 5
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+True
 
 >>> 2 ^ 10  -- power
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+1024
 
 >>> not False
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+True
 
 >>> div 20 3  -- integral division
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+6
 
 >>> mod 20 3  -- integral division remainder
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+2
 
 >>> max 4 10
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+10
 
 >>> min 5 (max 1 2)
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+2
 
 >>> max (min 1 10) (min 5 7)
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+5
 
 Because Haskell is a __statically-typed__ language, you see an error each time
 you try to mix values of different types in situations where you are not
@@ -491,7 +491,9 @@ Implement a function that returns the last digit of a given number.
 -}
 -- DON'T FORGET TO SPECIFY THE TYPE IN HERE
 lastDigit :: Int -> Int
-lastDigit n = mod n 10
+lastDigit n
+    | n >= 0 = mod n 10
+    | otherwise = mod (-n) 10
 
 
 {- |
@@ -521,10 +523,7 @@ branches because it is an expression and it must always return some value.
   satisfying the check will be returned and, therefore, evaluated.
 -}
 closestToZero :: Int -> Int -> Int
-closestToZero x y = min (abs x) (abs y)
-
-closestToZeroAlt :: Int -> Int -> Int
-closestToZeroAlt x y = if abs x > abs y then y else x -- different behaviour 1 (-1)
+closestToZero x y = if abs x > abs y then y else x -- different behaviour 1 (-1)
 
 
 {- |
@@ -561,6 +560,8 @@ mid :: Int -> Int -> Int -> Int
 mid x y z
     | (x > y && x < z) || (x < y && x > z) = x
     | (y > x && y < z) || (y < x && y > z) = y
+    | x == y || x == z = x
+    | z == y = z
     | otherwise = z
 
 midAlt :: Int -> Int -> Int -> Int
@@ -651,7 +652,9 @@ specifying complex expressions.
 sumLast2 :: Int -> Int
 sumLast2 n =
     let lastD = lastDigit n
-        preLastD = lastDigit (div n 10)
+        preLastD
+            | n >= 0 = lastDigit (div n 10)
+            | otherwise = lastDigit (div (-n) 10)
     in lastD + preLastD
   
 sumLast2Alt :: Int -> Int
@@ -681,7 +684,10 @@ You need to use recursion in this task. Feel free to return to it later, if you
 aren't ready for this boss yet!
 -}
 firstDigit :: Int -> Int
-firstDigit n = if n < 10 then n else firstDigit (div n 10)
+firstDigit n
+    | abs n < 10 = abs n
+    | n > 0 = firstDigit (div n 10)
+    | otherwise = firstDigit (div n (-10))
 
 
 {-
