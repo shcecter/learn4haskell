@@ -301,13 +301,13 @@ expressions in GHCi
   functions and operators first. Remember this from the previous task? ;)
 
 >>> 1 + 2
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+3
 
 >>> 10 - 15
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+-5
 
 >>> 10 - (-5)  -- negative constants require ()
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+15
 
 >>> (3 + 5) < 10
 <INSERT THE RESULT INSTEAD OF THE TEXT>
@@ -428,7 +428,7 @@ task is to specify the type of this function.
 >>> squareSum 3 4
 49
 -}
-
+squareSum :: Int -> Int -> Int
 squareSum x y = (x + y) * (x + y)
 
 
@@ -449,7 +449,7 @@ Implement the function that takes an integer value and returns the next 'Int'.
   function body with the proper implementation.
 -}
 next :: Int -> Int
-next x = error "next: not implemented!"
+next x = x + 1
 
 {- |
 After you've implemented the function (or even during the implementation), you
@@ -490,7 +490,8 @@ Implement a function that returns the last digit of a given number.
   whether it works for you!
 -}
 -- DON'T FORGET TO SPECIFY THE TYPE IN HERE
-lastDigit n = error "lastDigit: Not implemented!"
+lastDigit :: Int -> Int
+lastDigit n = mod n 10
 
 
 {- |
@@ -520,7 +521,10 @@ branches because it is an expression and it must always return some value.
   satisfying the check will be returned and, therefore, evaluated.
 -}
 closestToZero :: Int -> Int -> Int
-closestToZero x y = error "closestToZero: not implemented!"
+closestToZero x y = min (abs x) (abs y)
+
+closestToZeroAlt :: Int -> Int -> Int
+closestToZeroAlt x y = if abs x > abs y then y else x -- different behaviour 1 (-1)
 
 
 {- |
@@ -553,9 +557,14 @@ value after "=" where the condition is true.
 
 Casual reminder about adding top-level type signatures for all functions :)
 -}
+mid :: Int -> Int -> Int -> Int
+mid x y z
+    | (x > y && x < z) || (x < y && x > z) = x
+    | (y > x && y < z) || (y < x && y > z) = y
+    | otherwise = z
 
-mid x y z = error "mid: not implemented!"
-
+midAlt :: Int -> Int -> Int -> Int
+midAlt x y z = min (max x y) (max z x) -- wrong!
 {- |
 =⚔️= Task 8
 
